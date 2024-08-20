@@ -1,0 +1,105 @@
+SYSTEM MESSAGE:
+
+You will be provided with captions from a YouTube video, where each caption is associated with a timestamp. Your task is to create an 8-10 sentence bullet point summary of the video's content.
+
+INSTRUCTIONS:
+
+Ignore the timestamps and focus only on the captions' text.
+Identify the key points and main ideas conveyed throughout the video.
+Summarize these key points into bullet points, ensuring that the summary captures the essence of the video's content.
+Each bullet point should have a short label phrase in bold and a corresponding emoji as shown in the output example.
+Ensure the summary is concise and covers the full scope of the video, from the introduction to the conclusion.
+The summary should be around a 100 words for 10 minutes of video
+
+Input Example:
+
+00:00:00	good morning everyone uh thank you all so much for being here how are you guys doing good good yeah so I know a lot of you have come out here to in some way shape or form despite your experience despite your backgrounds to become a better software engineer and I think specifically the title of this program was how to become part of the top 1% of a software engineer just to give a little bit of a background about myself in case you guys don't know who I am um I'm sjad I went to Georgia Tech I got my
+
+00:00:28	bachelor's and MERS in computer science there um I work as a software engineer at spun which is a data Logging company for those who don't know um and I recently got promoted to a mid-level position and I regularly lead interns Junior engineers and also I post contents pretty much every day on various platforms now I want to kind of start off with one question if I could just get a couple people to just throw out some ideas what defines a top 1% software engineer any hands efficiency efficiency grit grit
+
+00:01:04	consistency consistency good at Team cooperation good at team collaboration now these are really good general terms to to be top 1% in any field and to be honest I think that's kind of where it lies you see a lot of people might throw out oh you need to be this good coder or you need to be this skill but that doesn't really exist for being a top 1% software engineer in fact you know when when you apply to Google you might need to put certain qualifications like um I know Java I know JavaScript I worked at
+
+00:01:36	this company I did this project but there's no set qualifications to determine a top 1% software engineer in fact it's all about perception in fact like you think someone is a top 1% software engineer based off the stuff that they do and the knowledge that they spew you think that someone's intelligent in something it's all a perception game and so in this sort of talk I plan on giving you guys a couple of these like tools that I picked up to make people perceive you as a top 1% software engineer despite your
+
+00:02:08	background or experience there are certain things that you can do to kind of accelerate it so you guys excited yes yes all right oh I'm excited the slides are back so first I want to start off with the mindset that you guys need to have and it all starts off with customer Obsession does anyone know where I got this term from customer obsession yeah it's Amazon's number one leadership principle I stole it from them when I entered there um no but it's really really important you see like whenever
+
+00:02:39	you work on anything any part of software whether it's even as simple as front-end engineering you need to think of what does a customer think about it like for example the YouTube subscribe button why is it red hm well someone can be like oh red is a primary color kids recognize it so it's very outwardly going another person might be like red that's kind of like a destructive action should we not actually have that there or should we change it up to something else or maybe like when we hit the
+
+00:03:08	Subscribe button what type of animations should appear so we can maximize sort of the dopamine our customers get to actually maximize their experience you see where I headed with this so it's all about like shifting your work to being a business impact a lot of people have an engineering Centric approach I have to do this Jura ticket I need to code this project but how is the customer a person who probably doesn't have any technical background or experience supposed to understand it in fact the biggest
+
+00:03:40	challenge for a lot of people in this world the biggest industry is Tech education a lot of people don't understand technology and a lot of Engineers try to think in terms of just technology in terms of just this Java function in terms of this async function in terms of what this can do threads all these like different things but kind of just boils out into a simple thing how are the people who are going to use this product want to use this product so they'll keep buying from us and trust me the more business impact you have the
+
+00:04:11	more solutions you solve from the customers the more money you'll make and the more renowned and more um kind of pushup you'll get and you will sooner than later become a top 1% the next thing communication so we have a good mindset now when we work now it's going to going to be communication so communication comes in many different aspects both Communications that you do as well as Communications that you receive and for me personally it all starts with mentorship like I mentioned I Mentor regularly like interns Junior
+
+00:04:46	Engineers on my team but I wasn't obviously always like that I used to be an intern myself I used to be kind of like the entry level Junior engineer myself and so when you join a software engineering company or a job you need to identify many enters quickly talk with your manager if you're an intern talk with your manager and be like hey I have career goal XY and Z I have technical goal X Y and Z could you help me identify someone on this team who could help me out and I'm actually really lucky in my experience um this principal
+
+00:05:18	engineer literally just like kind of just put herself out there to help me out and regularly had scheduled like Friday calls um every two weeks and she's actually the one who helped me work on my documentation to get me promoted so quickly so just first of all huge shout out to her but just in general identify your mentors identify people who have more experience than you who have kind of like are in the direction that you want to get to and work with them closely set up regular calls ask them nudge their brain and
+
+00:05:47	even if you don't have any questions particularly just find out what they do on a general day-to-day basis cuz actually a lot of the stuff I'm going to go over in this presentation comes from that from having proper mentors people who've been through it and speaking of that coffee chats so how many of you are interns here or already like working at a company a couple yeah yeah how many of you guys have regular coffee chats good good actually I'm very impressed uh you see I I don't know why but ever since Co happened um a lot of
+
+00:06:18	the world has gotten introverted and a lot of people have just like isolated themselves just being behind doors so no one actually wants to go out and talk no one actually wants to come out to public events like this so uh very impressive that you guys do coffee chats and if you aren't doing them do them just anyone on your team like a senior engineer or even like sometimes interns you can learn from from people who are at a below level than you just be like hey how are you doing set up 15 20 minutes and
+
+00:06:44	you'll be surprised people actually want to talk you know although they may not initiate people actually do love conversations they're good like breaking out space and so one you can get good work friends which will help you out and two you'll actually be able to learn from them and also another important thing is there was a recent study or actually I don't know if it was recent but there was a study in which the highest paid people on a particular team are not the smartest so intellect doesn't equal money you know what does
+
+00:07:15	well it intellect doesn't directly equal money the people that other people like the most got paid the most so you need people to like you you need people to be like hey yasim you're a good guy you should get promoted soon it's funny but it's true you know um in fact the people who are the smartest they typically are the like get paid the second most but it's the people who people like the most that get paid the most speaking of which brag sheet and this is actually something I picked up for my mentor but
+
+00:07:48	basically when you are working on your software engineering job you're going to go day in day out just doing tasks small tickets maybe have a meeting with someone I think every single day especially if you're new try to write down something that you accomplished oh what uh uh not Hello don't write that um write write down task that you did hey I merged this ticket hey I had a conversation hey I mentored Yasin and I helped him push this bug I helped him with this issue then over time as the weeks pass as the months pass by you'll
+
+00:08:19	be able to kind of recognize significant accomplish that accomplishments that you did and specifically when you're trying to get promoted and get pushed up you need to have specific things that you can point out that you worked on or it'll even serve as a reminder to you so the next time that you have a coffee chat maybe with a director or VP who directly impact the promotion or the hiring process they' be like huh wow you're impressive you did this this and this cuz sometimes just like you'll forget the amazing work that you did 4
+
+00:08:51	months ago I mean I can't even remember what I ate last night you know like people your your memory is small but you need to keep this is just a brag sheet for you and it'll help you and you alone throughout your career next up active listening and active questions so the first part about Communication in any stream starts off with active listening um you know when they say like when when you start your internship there's in the first couple weeks I like to think of it like a honeymoon's face you know they
+
+00:09:19	say there's no bad questions but for some reason everyone's too shy to ask questions and then later on week four week five happens and then you ask and you're like oh my God that might be a dumb question I should have asked that in week one well yeah don't live with regrets ask those questions early and often listen to what people are saying take notes in your meeting and even if it's like a highly complex meeting be like hey do you mind if I record this meeting and usually they're like yeah sure or if you're like taking notes be
+
+00:09:49	like hey one second I'm just going to take notes in this meeting in fact that'll actually be more impressive than you just being like hm yeah I understand everything yes yes yes like you all know what I'm talking about right so be very very active and ask those questions early and often and when you do ask questions and this is uh another thing sometimes people struggle with how do I know when to ask questions versus research something you know like you're given a complex problem should I spend a lot of time researching it or
+
+00:10:21	should I start asking questions and I I struggle with it sometimes too one thing that has helped me out a lot is the coffee chats you know you start off you uh meet different people and you ask them those different questions you see it only becomes a problem when you bug someone constantly the same person for a lot of questions but if you ask different people different things then it's like distributed like you you ask someone a question here ask question here every everyone's cool like no no one has a problem with you and in fact
+
+00:10:51	asking smart questions by listening and giving good information giving good context saying hey I tried X Y and Z and it didn't work and then trying to ask a question that those are just like some tips and tricks here all right time management you know I actually really don't like this term a lot of people ask me hey how do you manage your time how do you like make um like content how do you like do your job how do you do all this thing and you know I actually don't feel like I'm nudged for time I don't
+
+00:11:22	like like sometimes I use a calendar sometimes I don't but I seem to just get everything done that's because I believe in this other term Energy Management so you need to especially when you're ever you're starting a job your first couple of weeks identify when do you actually work best don't just work your 9 to-5 job in fact for some people an hour between 7 and 8:00 a.m. might be worth 3 hours between 3:00 p.m. and 600 p.m. so identify when you're most productive and communicate that with your manager
+
+00:11:56	communicate that with your team in fact my sole strategy when I first joined my job was I would pretty much work all hours you know like I would like work from as soon as I woke up till as soon as I slept just trying to like crack the just you know like when you're joining you you're just trying to crack at it like what's the problem just trying to figure out everything cuz I was struggling a little bit and I was just trying to work work work get problems done it got so bad to the point where I
+
+00:12:22	used to dream and JavaScript it was really weird don't get to that level um but yeah so I I would get so super obsessed but that taught me really well of when am I actually productive now the hour after 1:00 p.m. after I eat my lunch you know the post lunch coma I'm not very productive so that might be a good time to you know like phone someone or like have one of those coffee chats or just talk to people versus when I so so I work on the east coast and like my team here is on the west coast and so
+
+00:12:52	like those morning hours are golden for me no one no distractions no like messages no nothing I'm just like h focused on it so you need to identify when you get into sort of that like Flow State and I know a lot of people they like uh have what you call like you know like the tech proo multiple monitors four monitor screen you have like your code your your your your browser your your slack message I hate that I I I simply don't like it I like doing one task I don't like getting even sometimes work notifications are distractive so
+
+00:13:25	identify like where you actually truly have that flow state cuz that's where you operate you know like you need to get into that flow such that like literally like you don't worry about the time so as long as you're energy is good the time doesn't matter you'll get your stuff done hopefully in time but yeah just make sure you have the proper energy as you're working through it all right so a little more kind of tips and pieces of advice these are a little like I would say a little more advanced
+
+00:13:53	compared to the previous ones but so another things that separates out good software Engineers is one they have good quality estimates so when you're designing a project when you try to allocate them for certain Sprints do you guys know about like Sprints story tickets well this isn't too much jargon right okay but basically Engineers who can actually assess a certain problem like hey we want to build this browser feature we want to build this new feature this tab is going to have these X Y and Z features if you can actually
+
+00:14:26	learn to allocate okay this is going to take these many story points with these many engineers and this is how we're going to implement them if you can design and plan really well that'll make you a very top engineer another thing review people's code even if they're random people even if they're senior software Engineers even principal software Engineers review their code even if they're not even on your team review their code it will first of all get your name out there be like hey this guy knows stuff two it'll teach you
+
+00:14:59	about the product more and the more knowledge you have the better it is for you and it'll just make you an or three it'll make you a better overall engineer because you'll be like hey that's a bad coding practice hey you forgot a semicolon here hey you forgot the spacing here and yes it could be simple as spacing so many issues like that like senior software Engineers actually make a lot more mistakes than what you would imagine so they they aren't like super super ahead of you you can get there you
+
+00:15:25	can review their code and you can advance up there the third Point stay utilize and switch so this is probably one of the most essential points that I'm making right here but whenever you join a new team whenever you uh start working on a project and you work hard on it eventually you'll get to a point where you're like yeah I'm chilling this isn't hard like I'm I'm working on my job I I'm like chilling I I know how to build every feature each uh Sprint I finish my stuff ahead of time that's actually a dangerous point cuz you know
+
+00:15:56	what just happened you stopped learning things got a little too easy for you you will reach that point probably like a year a year and a half in and that's when you need to start really thinking about your career where you want to progress do you enjoy working in what you work now are you more of a front-end engineer that wants more backend experience are you more of a backend engineer that wants front end experience or do you even like the team that you're working on or do you think that a sister
+
+00:16:22	team or a different organization can make you a little more productive these are all sort of the thoughts that you should always be having in general but there's going to reach a point where things get a little too comfortable and you're like I'm cruising I'm making good money I'm I'm chilling at my job but that's actually dangerous because you aren't going to grow further than that it's going to be a little harder but sometimes change is good CU it'll give you a new set of challenges and in that
+
+00:16:45	new environment when you've already sort of proven yourself a little bit in the old environment that'll give you a new launching pad to go even further up so that was about kind of like a little bit tips and advice of how to become a top 1% software engineer I hope this helps and I'm free to answer any questions you guys have [Applause]
+
+Output Example:
+
+Summary
+
+To become a top 1% software engineer, focus on customer obsession, effective communication, mentorship, and continuous learning.
+
+Highlights
+🌟 Customer Obsession: Prioritize understanding customer needs in your work.
+🤝 Communication: Engage in regular discussions and mentorship for growth.
+📋 Brag Sheet: Keep track of your accomplishments to highlight during promotions.
+🕒 Energy Management: Work during your most productive hours for optimal results.
+📈 Code Review: Review others’ code to learn and establish your expertise.
+🔄 Embrace Change: Seek new challenges to avoid stagnation in your career.
+🎯 Focus on Impact: Shift your mindset from technical tasks to business outcomes.
+Key Insights
+🌍 Customer-Centric Mindset: Understanding customer perspectives can guide your development process and make your work more impactful, ultimately leading to career advancement.
+🗣️ Effective Communication Skills: Building relationships through communication fosters collaboration and can lead to mentorship opportunities that are vital for growth.
+📊 Importance of a Brag Sheet: Documenting your achievements not only boosts your confidence but prepares you for discussions about promotions, showcasing your value to the team.
+⚡ Energy Management over Time Management: Recognizing and leveraging your peak productivity hours can enhance your performance and satisfaction in your role, leading to better outcomes.
+🧠 Learning from Code Reviews: Participating in code reviews enhances your understanding of best practices and helps you build connections within your organization, increasing your visibility.
+🔄 Need for Continuous Growth: Regularly reassessing your career and seeking new challenges ensures you’re not stuck in a comfort zone, which can limit your long-term success.
+🏆 Focus on Business Impact: Shifting your focus from technical skills to how your work benefits the business can enhance your perception as a top-tier engineer and accelerate your career growth.

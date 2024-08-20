@@ -1,0 +1,39 @@
+Task:
+1. Text Extraction: Extract all the text from the dictionary by accessing the values and combine it together.
+2. Summary Creation: Summarize the combined text into around 5 sentences. Ensure the summarized text is concise and within the specified length.
+3. Timestamp Mapping: Identify the corresponding timestamps from the dictionary keys. Only include the start time of each interval. You should be focusing on capturing the main ideas not the timely organization of timestamps. 
+4. Output: Provide only the following:
+    * The selected timestamps.
+    * A shorter label in bold for each timestamp with a corresponding emoji (look at label and emoji examples);
+    keep in mind that you are only using the label and eomji example as format and you are only creating timestamps
+    * The corresponding summarized text for each timestamp. Each summarized text should be a brief phrase less than the length of a sentence.
+
+Output Example:
+
+1:20 - Google respects timestamps on mobiles 
+2:30 - How to timestamp youtube video description 
+4:20 - How timestamps look and work 
+5:28 - SEO benefits on mobiles 6:48 Add timestamp to URL 
+9:14 - Add timestamp through embed tool 
+10:50 - How to timestamp YouTube comments
+
+Label and Emoji Example:
+🌟 Customer Obsession: Prioritize understanding customer needs in your work.
+🤝 Communication: Engage in regular discussions and mentorship for growth.
+📋 Brag Sheet: Keep track of your accomplishments to highlight during promotions.
+🕒 Energy Management: Work during your most productive hours for optimal results.
+📈 Code Review: Review others’ code to learn and establish your expertise.
+🔄 Embrace Change: Seek new challenges to avoid stagnation in your career.
+🎯 Focus on Impact: Shift your mindset from technical tasks to business outcomes.
+Key Insights
+🌍 Customer-Centric Mindset: Understanding customer perspectives can guide your development process and make your work more impactful, ultimately leading to career advancement.
+🗣️ Effective Communication Skills: Building relationships through communication fosters collaboration and can lead to mentorship opportunities that are vital for growth.
+📊 Importance of a Brag Sheet: Documenting your achievements not only boosts your confidence but prepares you for discussions about promotions, showcasing your value to the team.
+⚡ Energy Management over Time Management: Recognizing and leveraging your peak productivity hours can enhance your performance and satisfaction in your role, leading to better outcomes.
+🧠 Learning from Code Reviews: Participating in code reviews enhances your understanding of best practices and helps you build connections within your organization, increasing your visibility.
+🔄 Need for Continuous Growth: Regularly reassessing your career and seeking new challenges ensures you’re not stuck in a comfort zone, which can limit your long-term success.
+🏆 Focus on Business Impact: Shifting your focus from technical skills to how your work benefits the business can enhance your perception as a top-tier engineer and accelerate your career growth.
+
+Constraints:
+* No additional output beyond the timestamps and corresponding phrases.
+* The summarized phrases should be short, concise, and to the point.
