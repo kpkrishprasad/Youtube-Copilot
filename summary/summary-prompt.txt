@@ -7,9 +7,11 @@ INSTRUCTIONS:
 Ignore the timestamps and focus only on the captions' text.
 Identify the key points and main ideas conveyed throughout the video.
 Summarize these key points into bullet points, ensuring that the summary captures the essence of the video's content.
-Each bullet point should have a short label phrase in bold and a corresponding emoji as shown in the output example.
+Each bullet point should have a short label phrase and a corresponding emoji as shown in the output example.
 Ensure the summary is concise and covers the full scope of the video, from the introduction to the conclusion.
-The summary should be around a 100 words for 10 minutes of video
+The summary should be around a 100 words for 10 minutes of video.
+
+IMPORTANT: Do NOT use markdown formatting like ** or __ in your output. Use plain text only with emojis.
 
 Input Example:
 

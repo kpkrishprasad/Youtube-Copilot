@@ -1,0 +1,9 @@
+Django>=4.2.0
+django-cors-headers>=4.0.0
+google-generativeai>=0.8.0
+python-dotenv>=1.0.0
+youtube-transcript-api>=1.2.0
+nltk>=3.8.0
+transformers>=4.30.0
+torch>=2.0.0
+

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Copilot</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Copilot</h1>
+        <p class="subtitle">AI-powered YouTube analysis</p>
+
+        <!-- Main Tab Navigation -->
+        <div class="tab-navigation main-tabs">
+            <button class="tab-button active" data-tab="videoInfo">📹 Video Information</button>
+            <button class="tab-button" data-tab="research">🔍 YouTube Research</button>
+        </div>
+
+        <!-- Main Tab Content -->
+        <div class="tab-content">
+            <!-- Video Information Tab -->
+            <div id="videoInfo" class="tab-pane active">
+                <!-- Input Section (only in Video Information) -->
+                <div class="input-section">
+                    <input type="text" id="youtube_link" placeholder="Paste YouTube URL here..." />
+                    <button id="getSummaryBtn">Analyze Video</button>
+                </div>
+
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing video...</p>
+                </div>
+
+                <div id="errorContainer" class="error-container" style="display: none;">
+                    <p id="errorText"></p>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" style="display: none;">
+                    <!-- Email Button for Video Summary -->
+                    <div style="text-align: right; margin-bottom: 10px;">
+                        <button id="emailSummaryBtn" class="email-btn">📧 Email Summary</button>
+                    </div>
+                    
+                    <!-- Sub-tabs for Video Information -->
+                    <div class="sub-tab-navigation">
+                        <button class="sub-tab-button active" data-subtab="summary">📝 Summary</button>
+                        <button class="sub-tab-button" data-subtab="timestamps">⏱️ Timestamps</button>
+                        <button class="sub-tab-button" data-subtab="qa">💬 Q&A</button>
+                    </div>
+
+                    <!-- Sub-tab Content -->
+                    <div class="sub-tab-content">
+                        <!-- Summary Sub-tab -->
+                        <div id="summary" class="sub-tab-pane active">
+                            <div class="section">
+                                <div id="summaryOnlyText" class="content-text"></div>
+                            </div>
+                        </div>
+
+                        <!-- Timestamps Sub-tab -->
+                        <div id="timestamps" class="sub-tab-pane">
+                            <div class="section">
+                                <div id="timestampsOnlyText" class="content-text"></div>
+                            </div>
+                        </div>
+
+                        <!-- Q&A Sub-tab -->
+                        <div id="qa" class="sub-tab-pane">
+                            <div class="section">
+                                <div id="chatMessages" class="chat-messages"></div>
+                                <div class="qa-input-section">
+                                    <input type="text" id="questionInput" placeholder="Ask a question about the video..." />
+                                    <button id="askBtn">Ask</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Research Tab -->
+            <div id="research" class="tab-pane">
+                <div class="research-section">
+                    <h3>🔍 Research Any Topic on YouTube</h3>
+                    <p class="research-subtitle">Ask any question and we'll find & analyze relevant YouTube videos to create a comprehensive guide for you.</p>
+                    
+                    <div class="research-input-section">
+                        <textarea id="researchQuery" placeholder="e.g., 'I want to learn how to create a resume for software engineering'" rows="3"></textarea>
+                        <button id="researchBtn">Research Topic</button>
+                    </div>
+
+                    <div id="researchLoading" class="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Researching and analyzing videos...</p>
+                        <p class="loading-sub">This may take 30-60 seconds</p>
+                    </div>
+
+                    <div id="researchResults" style="display: none;">
+                        <!-- Email Button for Research Guide -->
+                        <div style="text-align: right; margin-bottom: 10px;">
+                            <button id="emailResearchBtn" class="email-btn">📧 Email Guide</button>
+                        </div>
+                        
+                        <div class="research-meta">
+                            <p><strong>Search optimized to:</strong> <span id="searchQuery"></span></p>
+                        </div>
+                        
+                        <div class="guide-section">
+                            <h4>📚 Your Learning Guide</h4>
+                            <div id="guideContent" class="content-text"></div>
+                        </div>
+
+                        <div class="videos-section">
+                            <h4>🎥 Videos Analyzed</h4>
+                            <div id="videosList" class="videos-list"></div>
+                        </div>
+                    </div>
+
+                    <div id="researchError" class="error-container" style="display: none;">
+                        <p id="researchErrorText"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💡 <strong>Tip:</strong> Click the extension icon while on a YouTube video page</p>
+        </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div id="emailModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>📧 Email Results</h2>
+            <p class="modal-subtitle">Enter your email address to receive the results</p>
+            
+            <div class="modal-body">
+                <input type="email" id="emailInput" placeholder="your@email.com" />
+                <label class="checkbox-label">
+                    <input type="checkbox" id="rememberEmail" />
+                    <span>Remember my email</span>
+                </label>
+                <button id="sendEmailBtn" class="modal-btn">Send Email</button>
+                <p id="emailStatus" class="email-status"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
+

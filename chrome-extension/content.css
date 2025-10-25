@@ -1,0 +1,10 @@
+/* Styles for elements injected into YouTube pages */
+
+#yt-copilot-btn button:active {
+    transform: scale(0.95) !important;
+}
+
+#yt-copilot-btn button:hover {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
