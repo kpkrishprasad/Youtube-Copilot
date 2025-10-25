@@ -7,26 +7,28 @@ import re
 import requests
 import json
 
+
 def convert_link_video_id(url):
+    """Extract 11-character video ID from YouTube URL"""
     reg_exp = r'^.*((youtu\.be\/)|(v\/)|(/u/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*'
     match = re.match(reg_exp, url)
     return match.group(7) if match and len(match.group(7)) == 11 else False
 
 
 def extract_caption(url):
-    """Extract captions using URLToText API"""
+    """Extract video transcript using URLToText API and format as timestamp dict"""
     video_id = convert_link_video_id(url)
     
     if not video_id:
         raise ValueError("Invalid YouTube URL")
     
-    # Get API token from environment
+    # Load API key from environment
     api_token = os.getenv('URLTOTEXT_API_KEY')
     
     if not api_token:
         raise ValueError("URLTOTEXT_API_KEY not set in .env file")
     
-    # Make request to URLToText API
+    # Configure API request
     headers = {
         'Authorization': f'Token {api_token}',
         'Content-Type': 'application/json'
@@ -40,6 +42,7 @@ def extract_caption(url):
     }
     
     try:
+        # Call URLToText API to extract transcript
         response = requests.post(
             'https://urltotext.com/api/v1/urltotext/',
             headers=headers,
@@ -54,7 +57,7 @@ def extract_caption(url):
         content = data['data'].get('content', '')
         credits_used = float(data.get('credits_used', 0))
         
-        # Track credits locally
+        # Track API credit usage locally (for monitoring)
         try:
             tracker_path = './credits_tracker.json'
             if os.path.exists(tracker_path):
@@ -73,18 +76,18 @@ def extract_caption(url):
         if not content:
             raise ValueError("No content extracted from video")
         
-        # Split content into sentences and create timestamp-like structure
-        # Since URLToText doesn't provide timestamps, we'll split by sentences
+        # Convert raw text into timestamp-based structure
+        # URLToText doesn't provide timestamps, so we estimate them
         sentences = content.split('. ')
         
         new_transcript = {}
-        # Estimate timestamps based on average speaking rate (150 words/min)
         time_offset = 0
+        
+        # Estimate timestamps based on average speaking rate (150 words/min)
         for sentence in sentences:
             if sentence.strip():
-                # Estimate time based on word count (rough approximation)
                 word_count = len(sentence.split())
-                duration = (word_count / 150) * 60  # seconds
+                duration = (word_count / 150) * 60  # Convert to seconds
                 
                 timestamp = f"{int(time_offset // 60)}:{int(time_offset % 60):02d}"
                 new_transcript[timestamp] = sentence.strip()
@@ -96,8 +99,9 @@ def extract_caption(url):
         raise Exception(f"Failed to extract captions: {str(e)}")
 
 
-    
+
 def create_summary(transcript):
+    """LEGACY: Create summary using HuggingFace model (not currently used)"""
     summarizer = pipeline(
         "summarization",
         model="sshleifer/distilbart-cnn-12-6",
@@ -114,32 +118,38 @@ def create_summary(transcript):
 
 
 def create_timestamps(transcript):
-    # Configure Gemini
+    """Generate key timestamps with labels using Gemini AI"""
     genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
     model = genai.GenerativeModel('gemini-2.0-flash-exp')
 
+    # Load timestamp prompt template
     with open('./summary/prompt.txt', 'r') as prompt_file:
         prompt = prompt_file.read()
 
+    # Format transcript for Gemini
     combined_dict_text = '\n'.join([f"{key} {value}" for key, value in transcript.items()])
     final_prompt = prompt + '\n\n' + combined_dict_text
 
+    # Generate timestamps with Gemini
     response = model.generate_content(final_prompt)
     timestamp = response.text
 
     return timestamp
 
 def create_summary_gpt(transcript):
-    # Configure Gemini
+    """Generate concise video summary using Gemini AI"""
     genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
     model = genai.GenerativeModel('gemini-2.0-flash-exp')
 
+    # Load summary prompt template
     with open('./summary/summary-prompt.txt', 'r') as prompt_file:
         prompt = prompt_file.read()
 
+    # Format transcript for Gemini
     combined_dict_text = '\n'.join([f"{key} {value}" for key, value in transcript.items()])
     final_prompt = prompt + '\n\n' + combined_dict_text
 
+    # Generate summary with Gemini
     response = model.generate_content(final_prompt)
     summary = response.text
 

@@ -1,11 +1,14 @@
+// Backend API endpoints
 const API_URL = 'http://127.0.0.1:8000/get_summary/';
 const QA_URL = 'http://127.0.0.1:8000/ask_question/';
 const RESEARCH_URL = 'http://127.0.0.1:8000/youtube_research/';
 
+// Track current video being analyzed
 let currentVideoUrl = '';
 let currentVideoId = '';
 
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+// Cache expiration time (24 hours)
+const CACHE_DURATION = 24 * 60 * 60 * 1000;
 
 // Extract video ID from YouTube URL
 function extractVideoId(url) {
@@ -14,7 +17,7 @@ function extractVideoId(url) {
     return match ? match[1] : null;
 }
 
-// Load cached data for current video
+// Load cached summary/timestamps/Q&A for current video if available
 async function loadCachedData() {
     const youtubeLink = document.getElementById('youtube_link').value.trim();
     if (!youtubeLink) return;
@@ -25,30 +28,27 @@ async function loadCachedData() {
     currentVideoId = videoId;
     currentVideoUrl = youtubeLink;
     
-    // Get cached data from chrome.storage
     chrome.storage.local.get(['videoCache'], (result) => {
         const cache = result.videoCache || {};
         const cachedVideo = cache[videoId];
         
         if (cachedVideo && cachedVideo.expiresAt > Date.now()) {
-            // Cache is valid, restore data
             console.log('Loading cached data for video:', videoId);
             restoreCachedData(cachedVideo);
         } else if (cachedVideo) {
-            // Cache expired, remove it
+            // Expired - clean it up
             delete cache[videoId];
             chrome.storage.local.set({ videoCache: cache });
         }
     });
 }
 
-// Restore cached data to UI
+// Restore cached data to UI (summary, timestamps, chat history)
 function restoreCachedData(cachedVideo) {
-    // Display summary and timestamps
     document.getElementById('summaryOnlyText').textContent = cachedVideo.summary || '';
     document.getElementById('timestampsOnlyText').textContent = cachedVideo.timestamps || '';
     
-    // Restore Q&A chat history
+    // Restore previous Q&A conversation
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.innerHTML = '';
     if (cachedVideo.chatHistory && cachedVideo.chatHistory.length > 0) {
@@ -57,7 +57,6 @@ function restoreCachedData(cachedVideo) {
         });
     }
     
-    // Show results section
     document.getElementById('resultsSection').style.display = 'block';
 }
 
@@ -80,16 +79,17 @@ function saveToCache(videoId, summary, timestamps, chatHistory) {
     });
 }
 
-// Update chat history in cache
+// Update cached chat history after each Q&A interaction
 function updateChatHistoryInCache() {
     if (!currentVideoId) return;
     
-    // Get current chat messages
     const chatMessages = document.getElementById('chatMessages');
-    const messages = Array.from(chatMessages.children).map(msg => ({
-        text: msg.textContent,
-        type: msg.className.replace('chat-message ', '')
-    })).filter(msg => msg.type !== 'loading'); // Exclude loading messages
+    const messages = Array.from(chatMessages.children)
+        .filter(msg => !msg.classList.contains('loading')) // Skip loading indicators
+        .map(msg => ({
+            text: msg.textContent,
+            type: msg.className.replace('chat-message ', '')
+        }));
     
     chrome.storage.local.get(['videoCache'], (result) => {
         const cache = result.videoCache || {};
@@ -100,7 +100,7 @@ function updateChatHistoryInCache() {
     });
 }
 
-// Auto-fill URL if on YouTube page and load cached data
+// Auto-fill URL if on YouTube page and load any cached data
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const currentTab = tabs[0];
     if (currentTab.url && currentTab.url.includes('youtube.com/watch')) {
@@ -109,12 +109,12 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     }
 });
 
-// Load cached data when URL input changes
+// Reload cached data when user changes URL
 document.getElementById('youtube_link').addEventListener('input', () => {
     loadCachedData();
 });
 
-// Load cached research data on popup open
+// Restore last research query on popup open
 chrome.storage.local.get(['lastResearchQuery'], (result) => {
     if (result.lastResearchQuery) {
         document.getElementById('researchQuery').value = result.lastResearchQuery;
@@ -147,7 +147,6 @@ document.getElementById('youtube_link').addEventListener('keypress', (e) => {
 });
 
 async function getSummary(youtubeLink) {
-    // Show loading, hide previous results
     document.getElementById('loading').style.display = 'block';
     document.getElementById('resultsSection').style.display = 'none';
     document.getElementById('errorContainer').style.display = 'none';
@@ -173,53 +172,41 @@ async function getSummary(youtubeLink) {
         const data = await response.json();
 
         if (data.summary) {
-            // Split the response into summary and timestamps
+            // Backend returns combined text - split into summary and timestamps
             const fullText = data.summary;
-            const parts = fullText.split('\n\n');
-            
-            // First part is summary, second part is timestamps
             let summaryText = '';
             let timestampsText = '';
             
-            if (parts.length >= 2) {
-                // Find where timestamps start (usually after "Summary" section)
-                const combinedText = fullText;
-                const timestampMarkers = ['0:', '1:', '2:', '3:', '4:', '5:', '6:', '7:', '8:', '9:'];
-                
-                // Find first timestamp
-                let splitIndex = -1;
-                for (let marker of timestampMarkers) {
-                    const index = combinedText.indexOf('\n' + marker);
-                    if (index !== -1 && (splitIndex === -1 || index < splitIndex)) {
-                        splitIndex = index;
-                    }
+            // Find where timestamps start (look for first time marker like "0:12")
+            const timestampMarkers = ['0:', '1:', '2:', '3:', '4:', '5:', '6:', '7:', '8:', '9:'];
+            let splitIndex = -1;
+            
+            for (let marker of timestampMarkers) {
+                const index = fullText.indexOf('\n' + marker);
+                if (index !== -1 && (splitIndex === -1 || index < splitIndex)) {
+                    splitIndex = index;
                 }
-                
-                if (splitIndex !== -1) {
-                    summaryText = combinedText.substring(0, splitIndex).trim();
-                    timestampsText = combinedText.substring(splitIndex).trim();
-                } else {
-                    summaryText = fullText;
-                    timestampsText = 'No timestamps available';
-                }
+            }
+            
+            if (splitIndex !== -1) {
+                summaryText = fullText.substring(0, splitIndex).trim();
+                timestampsText = fullText.substring(splitIndex).trim();
             } else {
                 summaryText = fullText;
                 timestampsText = 'No timestamps available';
             }
             
-            // Display in separate tabs
             document.getElementById('summaryOnlyText').textContent = summaryText;
             document.getElementById('timestampsOnlyText').textContent = timestampsText;
             
-            // Show results section and store video URL
             currentVideoUrl = youtubeLink;
             currentVideoId = extractVideoId(youtubeLink);
             document.getElementById('resultsSection').style.display = 'block';
             
-            // Clear old chat history for new analysis
+            // Clear Q&A history for new video
             document.getElementById('chatMessages').innerHTML = '';
             
-            // Save to cache
+            // Cache results for 24 hours
             if (currentVideoId) {
                 saveToCache(currentVideoId, summaryText, timestampsText, []);
             }
@@ -242,7 +229,7 @@ function showError(message) {
     document.getElementById('resultsSection').style.display = 'none';
 }
 
-// Q&A Functionality
+// Q&A: Ask questions about the video
 document.getElementById('askBtn').addEventListener('click', async () => {
     await askQuestion();
 });
@@ -265,11 +252,8 @@ async function askQuestion() {
         return;
     }
     
-    // Add user question to chat
     addChatMessage(question, 'user');
     document.getElementById('questionInput').value = '';
-    
-    // Show loading indicator
     addChatMessage('Thinking...', 'loading');
     
     try {
@@ -296,8 +280,7 @@ async function askQuestion() {
         
         if (data.answer) {
             addChatMessage(data.answer, 'bot');
-            // Update cache with new chat message
-            updateChatHistoryInCache();
+            updateChatHistoryInCache(); // Save Q&A to cache
         } else if (data.error) {
             addChatMessage(`Error: ${data.error}`, 'error');
         } else {
@@ -335,23 +318,18 @@ document.querySelectorAll('.tab-button').forEach(button => {
 });
 
 function switchTab(tabName) {
-    // Hide all tab panes
     document.querySelectorAll('.tab-pane').forEach(pane => {
         pane.classList.remove('active');
     });
     
-    // Remove active class from all buttons
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.remove('active');
     });
     
-    // Show selected tab pane
     document.getElementById(tabName).classList.add('active');
-    
-    // Add active class to clicked button
     document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
     
-    // Load cached research when switching to research tab
+    // Restore cached research when switching to research tab
     if (tabName === 'research') {
         loadCachedResearch();
     }
@@ -366,28 +344,24 @@ document.querySelectorAll('.sub-tab-button').forEach(button => {
 });
 
 function switchSubTab(subTabName) {
-    // Hide all sub-tab panes
     document.querySelectorAll('.sub-tab-pane').forEach(pane => {
         pane.classList.remove('active');
     });
     
-    // Remove active class from all sub-tab buttons
     document.querySelectorAll('.sub-tab-button').forEach(btn => {
         btn.classList.remove('active');
     });
     
-    // Show selected sub-tab pane
     document.getElementById(subTabName).classList.add('active');
-    
-    // Add active class to clicked button
     document.querySelector(`[data-subtab="${subTabName}"]`).classList.add('active');
 }
 
-// YouTube Research Functionality
+// YouTube Research: Search & summarize multiple videos on a topic
 document.getElementById('researchBtn').addEventListener('click', async () => {
     await doResearch();
 });
 
+// Ctrl+Enter to submit research query
 document.getElementById('researchQuery').addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && e.ctrlKey) {
         doResearch();
@@ -402,7 +376,6 @@ async function doResearch() {
         return;
     }
     
-    // Show loading
     document.getElementById('researchLoading').style.display = 'block';
     document.getElementById('researchResults').style.display = 'none';
     document.getElementById('researchError').style.display = 'none';
@@ -432,11 +405,11 @@ async function doResearch() {
             return;
         }
         
-        // Display results
+        // Display search query and guide
         document.getElementById('searchQuery').textContent = data.search_query;
         document.getElementById('guideContent').textContent = data.guide;
         
-        // Display videos
+        // Display video list
         const videosList = document.getElementById('videosList');
         videosList.innerHTML = '';
         
@@ -451,7 +424,7 @@ async function doResearch() {
         
         document.getElementById('researchResults').style.display = 'block';
         
-        // Save research to cache and remember query
+        // Cache results and save query for next time
         saveResearchToCache(query, data.search_query, data.guide, data.videos);
         chrome.storage.local.set({ lastResearchQuery: query });
         
@@ -468,7 +441,7 @@ function showResearchError(message) {
     document.getElementById('researchResults').style.display = 'none';
 }
 
-// Research caching functions
+// Save research results to cache (24-hour expiration)
 function saveResearchToCache(query, searchQuery, guide, videos) {
     chrome.storage.local.get(['researchCache'], (result) => {
         const cache = result.researchCache || {};
@@ -487,6 +460,7 @@ function saveResearchToCache(query, searchQuery, guide, videos) {
     });
 }
 
+// Load cached research results if available and not expired
 function loadCachedResearch() {
     const query = document.getElementById('researchQuery').value.trim();
     if (!query) return;
@@ -496,22 +470,21 @@ function loadCachedResearch() {
         const cachedResearch = cache[query];
         
         if (cachedResearch && cachedResearch.expiresAt > Date.now()) {
-            // Cache is valid, restore data
             console.log('Loading cached research data for query:', query);
             restoreCachedResearch(cachedResearch);
         } else if (cachedResearch) {
-            // Cache expired, remove it
+            // Expired - clean up
             delete cache[query];
             chrome.storage.local.set({ researchCache: cache });
         }
     });
 }
 
+// Restore cached research to UI
 function restoreCachedResearch(cachedResearch) {
     document.getElementById('searchQuery').textContent = cachedResearch.searchQuery;
     document.getElementById('guideContent').textContent = cachedResearch.guide;
     
-    // Display videos
     const videosList = document.getElementById('videosList');
     videosList.innerHTML = '';
     
@@ -527,20 +500,23 @@ function restoreCachedResearch(cachedResearch) {
     document.getElementById('researchResults').style.display = 'block';
 }
 
-// Load cached research when query input changes
+// Check for cached results as user types
 document.getElementById('researchQuery').addEventListener('input', () => {
     loadCachedResearch();
 });
 
 
-// Email functionality
+// ============================================
+// Email Functionality
+// ============================================
+
 const EMAIL_SUMMARY_URL = 'http://127.0.0.1:8000/email_summary/';
 const EMAIL_RESEARCH_URL = 'http://127.0.0.1:8000/email_research/';
 
 let currentEmailType = null; // 'summary' or 'research'
 let currentResearchData = null;
 
-// Load saved email on popup load
+// Restore saved email on popup open
 chrome.storage.local.get(['savedEmail'], (result) => {
     if (result.savedEmail) {
         document.getElementById('emailInput').value = result.savedEmail;
@@ -576,7 +552,7 @@ document.getElementById('emailModal').addEventListener('click', (e) => {
     }
 });
 
-// Send Email Button
+// Handle email submission
 document.getElementById('sendEmailBtn').addEventListener('click', async () => {
     const email = document.getElementById('emailInput').value.trim();
     const rememberEmail = document.getElementById('rememberEmail').checked;
@@ -589,7 +565,7 @@ document.getElementById('sendEmailBtn').addEventListener('click', async () => {
         return;
     }
     
-    // Basic email validation
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         statusEl.textContent = 'Please enter a valid email address';
@@ -597,14 +573,13 @@ document.getElementById('sendEmailBtn').addEventListener('click', async () => {
         return;
     }
     
-    // Save email if remember is checked
+    // Save or clear email preference
     if (rememberEmail) {
         chrome.storage.local.set({ savedEmail: email });
     } else {
         chrome.storage.local.remove('savedEmail');
     }
     
-    // Disable button and show loading
     sendBtn.disabled = true;
     sendBtn.textContent = 'Sending...';
     statusEl.textContent = '';
@@ -634,11 +609,12 @@ document.getElementById('sendEmailBtn').addEventListener('click', async () => {
     }
 });
 
+// Send video summary + Q&A via email
 async function sendSummaryEmail(email) {
     const summary = document.getElementById('summaryOnlyText').textContent;
     const timestamps = document.getElementById('timestampsOnlyText').textContent;
     
-    // Get chat history
+    // Extract Q&A conversation
     const chatMessages = document.getElementById('chatMessages');
     const chatHistory = Array.from(chatMessages.children)
         .filter(msg => !msg.classList.contains('loading'))
@@ -668,12 +644,13 @@ async function sendSummaryEmail(email) {
     }
 }
 
+// Send research guide + videos via email
 async function sendResearchEmail(email) {
     const query = document.getElementById('researchQuery').value;
     const searchQuery = document.getElementById('searchQuery').textContent;
     const guide = document.getElementById('guideContent').textContent;
     
-    // Get videos list
+    // Extract video data from UI
     const videosList = document.getElementById('videosList');
     const videos = Array.from(videosList.querySelectorAll('.video-item')).map(item => {
         const link = item.querySelector('a');
